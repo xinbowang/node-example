@@ -4,7 +4,6 @@
 > 项目克隆到本地，需要在当前目录下创建db文件夹
 
 * node-example
-
     *  db : 数据库存储目录<需手动创建，并手动关联数据库：**mongod --dbpath=项目文件下的db目录**>
     *  models : 数据库模型文件目录
     *  public : 公共文件目录（css，js，image...）
