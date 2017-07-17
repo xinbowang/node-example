@@ -1,0 +1,19 @@
+<nav aria-label="Page navigation" style="text-align: center;">
+	<ul class="pagination">
+		<li>
+			<a href="{% if page<=2 %}{{url}}{% else %}{{url}}?page={{page-1}}{%endif%}" aria-label="Previous">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li>
+			<a>
+			<span aria-hidden="true">当前页面{{page}},一共{{pages}}页,每页显示{{limit}}条数据,总共{{count}}条数据</span>
+			</a>
+		</li>
+		<li>
+	    	<a href="{% if page>=pages %}{{url}}?page={{pages}}{% else %}{{url}}?page={{page+1}}{%endif%}" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+	    	</a>
+	    </li>
+	</ul>
+</nav>

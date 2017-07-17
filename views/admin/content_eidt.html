@@ -1,0 +1,38 @@
+<!-- 引入公用模板 layout.html -->
+{% extends 'layout.html' %}
+{% block main%}
+	<div class="container">
+		<h2>内容添加</h2>
+		<ol class="breadcrumb">
+			<li><a href="/admin">后台管理</a></li>
+			<li><a href="/admin/content">内容列表</a></li>
+			<li class="active">内容编辑</li>
+		</ol>
+		
+		<form method="post">
+			<p>分类名称</p>
+			<select name="category" class="form-control">
+				{% for category in categories%}
+				{% if contents.category._id.toString()==category._id.toString() %}
+				<option value="{{category.id}}" selected="selected">{{category.name}}</option>
+				{% else %}
+				<option value="{{category.id}}">{{category.name}}</option>
+				{% endif %}
+				{% endfor %}
+			</select>
+			<div class="form-group">
+				<label for="title">标题</label>
+				<input type="text" class="form-control" value="{{contents.title}}" name="title" id="title" >
+			</div>
+			<div class="form-group">
+				<label for="abstract">简介</label>
+				<textarea name="abstract" class="form-control" rows="3" id="abstract" cols="" >{{contents.abstract}}</textarea>
+			</div>
+			<div class="form-group">
+				<label for="content">主题内容</label>
+				<textarea name="content" class="form-control" id="content" rows="5" cols="" >{{contents.content}}</textarea>
+			</div>
+			<button type="submit" class="btn btn-default">提 交</button>
+		</form>
+	</div>
+{% endblock %}

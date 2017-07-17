@@ -1,0 +1,30 @@
+<!-- 引入公用模板 layout.html -->
+{% extends 'layout.html' %}
+{% block main%}
+	<div class="container">
+		<h2>分类列表</h2>
+		<ol class="breadcrumb">
+			<li><a href="/admin">后台管理</a></li>
+			<li class="active">分类名称</li>
+		</ol>
+		<table class="table table-striped table-bordered table-hover text-center">
+			<tr>
+				<th width="30%" class="text-center">ID</th>
+				<th class="text-center">分类名称</th>
+				<th class="text-center">操作</th>
+			</tr>
+			{% for cate in categories %}
+			<tr>
+				<td>{{cate._id.toString()}}</td>
+				<td>{{cate.name}}</td>
+				<td>
+					<a href="/admin/category/eidt?id={{cate._id.toString()}}">编辑</a> |
+					<a href="/admin/category/delete?id={{cate._id.toString()}}">删除</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+	<!--引入分页模板块-->
+	{% include "page.html" %}
+{% endblock %}

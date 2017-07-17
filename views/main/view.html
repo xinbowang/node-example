@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block index %}
+	<div class="container view">
+		<h3>{{content.title}}</h3>
+		<p><span>作者：{{content.user.username}}&nbsp;&nbsp;发布时间：{{content.nowTime|date('Y年m月d日 H:i:s',-8*60) }}&nbsp;&nbsp;阅读量：{{content.views}}&nbsp;&nbsp;评论数：{{content.comments.length}}</span></p>
+		<div class="container">
+			{{content.content}}
+		</div>
+		<div class="comment">
+			<div class="clearfix">评论<span class="pull-right">一共有<em id="comLen"></em>条评论</span></div>
+			{% if infoUser._id %}
+			<div class="clearfix">
+				<textarea class="form-control" id="comCon" rows="3"></textarea>
+				<input type="hidden" id="contentId" name="" value="{{content.id}}" />
+				<input type="button" id="commentBtn" class="btn btn-primary pull-right" name="" id="" value="发表评论" />
+			</div> 
+			{% else %}
+			<p class="alert alert-danger" role="alert">您还没有登录，请先登录！</p>
+			{% endif %}
+			<div class="comList">
+				
+			</div>
+			<nav aria-label="Page navigation" style="text-align: center;">
+				<ul class="pagination">
+					<li></li>
+					<li>
+						<span aria-hidden="true"></span>
+					</li>
+					<li></li>
+				</ul>
+			</nav>
+			<!--<div class="com-con">
+				<p class="clearfix">admin <span class="pull-right">2017-05-16</span></p>
+				<p>哈哈</p>
+			</div>-->
+		</div>
+	</div>
+	<script src="/public/js/comment.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
