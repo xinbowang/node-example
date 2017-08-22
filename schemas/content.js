@@ -30,7 +30,12 @@ var newSch = new Schema({
 		default : ''
 	},
 	// 内容
-	content : {
+	content_md : {
+		type :　String,
+		default : ''
+	},
+	// 内容
+	content_html : {
 		type :　String,
 		default : ''
 	},

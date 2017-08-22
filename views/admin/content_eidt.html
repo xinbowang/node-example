@@ -30,7 +30,11 @@
 			</div>
 			<div class="form-group">
 				<label for="content">主题内容</label>
-				<textarea name="content" class="form-control" id="content" rows="5" cols="" >{{contents.content}}</textarea>
+				<div class="editormd" id="test-editormd">
+				    <textarea class="editormd-markdown-textarea" name="content_md">{{contents.content_md}}</textarea>
+				    <!-- html textarea 需要开启配置项 saveHTMLToTextarea == true -->
+				    <textarea class="editormd-html-textarea" name="content_html" id="content"></textarea>
+				</div>
 			</div>
 			<button type="submit" class="btn btn-default">提 交</button>
 		</form>

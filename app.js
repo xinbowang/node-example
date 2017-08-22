@@ -13,7 +13,7 @@ var bodyParser = require('body-parser');
 // 引入cookies 来判断是否是登录状态
 var cookies = require('cookies');
 // 引入数据库 ./models/User,判断是否是管理员,这个很多地方用到，所以用isAdmin布尔值判断
-var User = require('./models/User')
+var User = require('./models/User');
 
 // 执行express => 相当于node.js 里面的http.createServer()
 var app = express();

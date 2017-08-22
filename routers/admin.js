@@ -330,7 +330,8 @@ router.post('/content/add',function(req,res){
 			title : title,
 			category : req.body.category,
 			abstract : req.body.abstract,
-			content : req.body.content,
+			content_md : req.body.content_md,
+			content_html : req.body.content_html,
 			user : req.infoUser._id.toString() // 先保存作者
 		}).save().then(function( newName ){
 			res.render('admin/category_success',{
@@ -391,7 +392,8 @@ router.post('/content/eidt',function(req,res){
 			title : title,
 			category : req.body.category,
 			abstract : req.body.abstract,
-			content : req.body.content
+			content_md : req.body.content_md,
+			content_html : req.body.content_html,
 		}).then(function( newName ){
 			res.render('admin/category_success',{
 				infoUser :　req.infoUser,

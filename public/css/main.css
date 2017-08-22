@@ -259,6 +259,7 @@ textarea::-webkit-input-placeholder {
 	width: 100%;
 	background: rgba(255,255,255,.1);
 	padding: 30px 20px;
+	margin-top: 30px;
 }
 textarea{
 	resize: none;
