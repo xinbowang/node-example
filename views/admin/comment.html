@@ -1,0 +1,41 @@
+<!-- 引入公用模板 layout.html -->
+{% extends 'layout.html' %}
+{% block main%}
+	<div class="container">
+		<h2>内容列表</h2>
+		<ol class="breadcrumb">
+			<li><a href="/admin">后台管理</a></li>
+			<li><a href="/admin/content">内容列表</a></li>
+			<li class="active">评论管理</li>
+		</ol>
+		<table class="table table-striped table-bordered table-hover text-center">
+			<tr>
+				<th class="text-center">分类名称</th>
+				<th class="text-center">标题</th>
+				<th class="text-center">作者</th>
+				<th class="text-center">评论时间</th>
+				<th class="text-center">评论内容</th>
+				<th class="text-center">操作</th>
+			</tr>
+			{% if contents.comments.length %}
+				{% for comment in contents.comments %}
+					<tr>
+						<td>{{contents.category.name}}</td>
+						<td>{{contents.title}}</td>
+						<td>{{comment.username}}</td>
+						<td>{{comment.time|date('Y年m月d日 H:i:s',-8*60) }}</td>
+						<td>{{comment.content}}</td>
+						<td>
+							<a href="/admin/comment/delete?idx={{loop.index-1}}&id={{contents._id.toString()}}">删除</a>
+						</td>
+					</tr>
+				{% endfor %}
+			{% else %}
+				<tr class="danger">
+					<td colspan="6">还没有评论</td>
+				</tr>
+			{% endif %}
+		</table>
+	</div>
+	<!--{% include "page.html" %}-->
+{% endblock %}

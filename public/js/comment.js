@@ -6,6 +6,10 @@ var comment = []; // 返回的评论
 // 提交评论
 $(function(){
 	$('#commentBtn').on('click',function(){
+		if( $.trim($('#comCon').val()) == '评论不能为空！' || $.trim($('#comCon').val())==='' ) {
+			$('#comCon').val('评论不能为空！');
+			return;
+		}
 		$.ajax({
 			type : 'POST',
 			url : '/api/comment/post',
@@ -26,20 +30,23 @@ $(function(){
 	})
 })
 // 每次页面重载，都获取评论
-$.ajax({
-	url : '/api/comment',
-	data : {
-		contentid : $('#contentId').val()
-	},
-	success : function(respondata){
-		//console.log(respondata);
-		if( !respondata.code ){
-			comment = respondata.data.reverse();
-			comments(comment);// 反转数组
+if($('#contentId').val()){
+	$.ajax({
+		url : '/api/comment',
+		data : {
+			contentid : $('#contentId').val()
+		},
+		success : function(respondata){
+			//console.log(respondata);
+			if( !respondata.code ){
+				comment = respondata.data.reverse();
+				comments(comment);// 反转数组
+			}
 		}
-	}
-	
-})
+		
+	})
+}
+
 
 // 分页按钮点击
 $('.pagination').delegate('a','click',function(){

@@ -174,7 +174,7 @@ textarea::-webkit-input-placeholder {
 	background-size: 100% auto;
 	padding-bottom: 50px;
 }
-.main h2{
+.main .main-title{
 	font-size: 42px;
 	color: #bcbcbc;
 	text-align: center;
@@ -182,7 +182,7 @@ textarea::-webkit-input-placeholder {
 	height: 130px;
 	padding-top: 30px;
 }
-.main h2::before{
+.main .main-title::before{
 	content: '';
 	width: 250px;
 	height: 69px;
@@ -244,7 +244,7 @@ textarea::-webkit-input-placeholder {
 .view{
 	color: #fff;
 }
-.view h3{
+.view .view-h3{
 	text-align: center;
 	font-size: 30px;
 }
@@ -284,7 +284,10 @@ textarea{
 .com-con p:nth-of-type(2){
 	padding: 0 10px;
 }
-
+.markTop{
+	margin-top: 30px;
+	border-radius: 8px;
+}
 
 
 

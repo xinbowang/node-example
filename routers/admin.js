@@ -202,7 +202,7 @@ router.post('/category/eidt',function(req,res){
 			}else{
 				// 通过数据库查询，分类名称是否与存在其他id上的名称相同
 				return Category.findOne({ // 查询到要修改分类名称
-					_id : { $ne:id },
+					_id : { $ne:id }, // 除去自身id
 					name : name
 				})
 			}
@@ -429,5 +429,45 @@ router.get('/content/delete',function(req,res){
 	}
 })
 
-
+// 评论
+/*
+ * 评论页面
+ * */
+router.get('/comment',function(req,res){
+	var contentId = req.query.id|| ''; // 获取path下的id
+	// 查找属于内容 所在的评论
+	Content.findOne({
+		_id : contentId
+	}).populate(['category','user']).then(function(content){
+		content.comments = content.comments.reverse();
+		res.render('admin/comment',{
+			infoUser :　req.infoUser,
+			contents : content
+		})
+	})
+})
+/*
+ * 评论删除
+ * */
+router.get('/comment/delete',function(req,res,next){
+	var idx = req.query.idx|| ''; // 获取path下的id
+	var id = req.query.id|| ''; // 获取path下的id
+	// 查找属于内容 所在的评论
+	Content.findOne({
+		_id : id
+	}).then(function(content){
+		content.comments.reverse().splice(idx,1);
+		return content.comments.reverse();
+	}).then(function(comment){
+		// console.log(comment);
+		return Content.update({ // 保存数据
+			_id : id
+		},{
+			comments : comment
+		});
+	}).then(function(){
+		// 路由，重定向
+		res.redirect('/admin/comment?id='+id);
+	})
+})
 module.exports = router;

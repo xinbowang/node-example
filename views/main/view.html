@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 {% block index %}
 	<div class="container view">
-		<h3>{{content.title}}</h3>
+		<h3 class="view-h3">{{content.title}}</h3>
 		<p><span>作者：{{content.user.username}}&nbsp;&nbsp;发布时间：{{content.nowTime|date('Y年m月d日 H:i:s',-8*60) }}&nbsp;&nbsp;阅读量：{{content.views}}&nbsp;&nbsp;评论数：{{content.comments.length}}</span></p>
-		<div class="markdown-body editormd-preview-container">
+		<div class="markdown-body editormd-preview-container markTop">
 			<!--將html字符串解析成html-->
 			{% autoescape false %}
 			    {{ content.content_html }}
@@ -13,7 +13,7 @@
 			<div class="clearfix">评论<span class="pull-right">一共有<em id="comLen"></em>条评论</span></div>
 			{% if infoUser._id %}
 			<div class="clearfix">
-				<textarea class="form-control" id="comCon" rows="3"></textarea>
+				<textarea class="form-control" id="comCon" rows="3" placeholder="请输入..."></textarea>
 				<input type="button" id="commentBtn" class="btn btn-primary pull-right" name="" id="" value="发表评论" />
 			</div> 
 			{% else %}

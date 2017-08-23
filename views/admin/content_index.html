@@ -27,7 +27,8 @@
 					<td>{{content.nowTime|date('Y年m月d日 H:i:s',-8*60) }}</td>
 					<td>
 						<a href="/admin/content/eidt?id={{content._id.toString()}}">编辑</a> |
-						<a href="/admin/content/delete?id={{content._id.toString()}}">删除</a>
+						<a href="/admin/content/delete?id={{content._id.toString()}}">删除</a> |
+						<a href="/admin/comment?id={{content._id.toString()}}">查看评论</a>
 					</td>
 				</tr>
 			{% endfor %}
