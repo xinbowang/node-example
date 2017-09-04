@@ -4,7 +4,8 @@
   "description": "lun tan",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [
     "node.js",
@@ -14,11 +15,16 @@
   "license": "ISC",
   "devDependencies": {
     "body-parser": "^1.17.1",
-    "cookies": "^0.7.0",
+    "cookie-parser": "^1.4.3",
+    "cookies": "^0.7.1",
+    "everyauth": "^0.4.9",
     "express": "^4.15.2",
+    "express-session": "^1.15.5",
     "log4js": "^1.1.1",
     "markdown": "^0.5.0",
+    "method-override": "^2.3.9",
     "mongoose": "^4.9.5",
+    "morgan": "^1.8.2",
     "swig": "^1.4.2"
   },
   "dependencies": {

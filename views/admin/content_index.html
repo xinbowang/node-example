@@ -28,7 +28,11 @@
 					<td>
 						<a href="/admin/content/eidt?id={{content._id.toString()}}">编辑</a> |
 						<a href="/admin/content/delete?id={{content._id.toString()}}">删除</a> |
+						{% if content.comments.length %}
 						<a href="/admin/comment?id={{content._id.toString()}}">查看评论</a>
+						{% else %}
+						暂无评论
+						{% endif %}
 					</td>
 				</tr>
 			{% endfor %}

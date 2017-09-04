@@ -7,11 +7,12 @@ var Category = require('../models/Category');
 //引入分类列表数据库查询
 var Content = require('../models/Content');
 
+var infoUser = null;
 // 判断是否是管理员登录
 router.use(function(req,res,next){
-	if( !req.infoUser.isAdmin ){
-		res.send('你不是管理员，不能进入后台管理系统！');
-		return;
+	infoUser = {
+		username: req.session.username,
+		_id: req.session._id
 	}
 	next();
 })
@@ -19,7 +20,7 @@ router.use(function(req,res,next){
 // 首页
 router.get('/',function(req,res,next){
 	res.render('admin/index',{
-		infoUser :　req.infoUser
+		infoUser
 	})// 第一个参数：引入的html模板； 第二个参数 用户登录判断的模板用于html中模板判断{%%}
 })
 
@@ -32,7 +33,7 @@ router.get('/user',function(req,res){
 	var page = Number(req.query.page) || 1; // 通过node方法req.query解析hash值-> ?page=1 来获取当前页
 	var limit = 5; // 每页显示条数
 	var skip = 0; // 跳过条数
-	var pages = 0;
+	var pages = 1;
 	User.count().then(function(count){
 		// console.log(count); 异步返回数据库数据条数
 		// 页数超过最大页数限制
@@ -47,14 +48,14 @@ router.get('/user',function(req,res){
 		User.find().limit(limit).skip(skip).then(function( users ){
 			// console.log(users); // 返回所有数据的数组集合
 			res.render('admin/user_index',{
-				infoUser :　req.infoUser,
+				infoUser,
 				users : users,
 				// 返回分页数据
 				page : page,
 				pages:pages,
 				limit:limit,
 				count:count,
-				url : '/admin/user'
+				url : '/admin/user?'
 			})// 第一个参数：引入的html模板； 第二个参数 用户登录判断的模板用于html中模板判断{%%}
 		})
 	})
@@ -84,14 +85,14 @@ router.get('/category',function(req,res){
 		Category.find().sort({_id:-1}).limit(limit).skip(skip).then(function( categories ){
 			// console.log(categories); // 返回所有数据的数组集合
 			res.render('admin/category',{
-				infoUser :　req.infoUser,
+				infoUser,
 				categories : categories,
 				// 返回分页数据
 				page : page,
 				pages:pages,
 				limit:limit,
 				count:count,
-				url : '/admin/category'
+				url : '/admin/category?'
 			})// 第一个参数：引入的html模板； 第二个参数 用户登录判断的模板用于html中模板判断{%%}
 		})
 	})
@@ -99,7 +100,7 @@ router.get('/category',function(req,res){
 // 分类名称添加页
 router.get('/category/add',function(req,res){
 	res.render('admin/category_add',{
-		infoUser :　req.infoUser
+		infoUser
 	})
 })
 // 分类名称添加提交
@@ -108,7 +109,7 @@ router.post('/category/add',function(req,res){
 	
 	if ( name=='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '列表名称不能为空！请返回上一页重新输入！'
 		});
 		return;
@@ -119,7 +120,7 @@ router.post('/category/add',function(req,res){
 	}).then(function( nameTrue ){
 		if( nameTrue ){
 			res.render('admin/category_err',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '该名称已存在，返回上一步重新填写！',
 				title : '添加'
 			});
@@ -132,7 +133,7 @@ router.post('/category/add',function(req,res){
 		
 	}).then(function( newName ){
 		res.render('admin/category_success',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '名称添加成功！',
 			url : '/admin/category',
 			title : '添加'
@@ -150,13 +151,13 @@ router.get('/category/eidt',function(req,res){
 	}).then(function( category ){
 		if( !category ){
 			res.render('admin/category_err',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '分类名称不存在！',
 				title : '编辑'
 			});
 		}else{
 			res.render('admin/category_eidt',{
-				infoUser :　req.infoUser,
+				infoUser,
 				category :　category
 			})
 		}
@@ -172,7 +173,7 @@ router.post('/category/eidt',function(req,res){
 	var name = req.body.name || '';
 	if( name=='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '用户名称不能为空！',
 			title : '编辑'
 		})
@@ -184,7 +185,7 @@ router.post('/category/eidt',function(req,res){
 	}).then(function( category ){
 		if( !category ){
 			res.render('admin/category_err',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '分类名称不存在！',
 				title : '编辑'
 			});
@@ -193,7 +194,7 @@ router.post('/category/eidt',function(req,res){
 			// 名称是否有修改
 			if( category.name == name ){
 				res.render('admin/category_success',{
-					infoUser :　req.infoUser,
+					infoUser,
 					message : '分类名称修改成功！',
 					url : '/admin/category',
 					title:'编辑'
@@ -211,7 +212,7 @@ router.post('/category/eidt',function(req,res){
 	}).then(function( sameCategory ){
 		if( sameCategory ){
 			res.render('admin/category_err',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '分类名称已存在，请更换其他名称！',
 				title : '编辑'
 			});
@@ -225,7 +226,7 @@ router.post('/category/eidt',function(req,res){
 		}
 	}).then(function(){
 		res.render('admin/category_success',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '分类名称修改成功！',
 			url : '/admin/category',
 			title:'编辑'
@@ -239,7 +240,7 @@ router.get('/category/delete',function(req,res){
 	var id = req.query.id || '';
 	if( id=='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '分类名称不存在，删除失败！',
 			url : '/admin/category',
 			title:'删除'
@@ -249,7 +250,7 @@ router.get('/category/delete',function(req,res){
 			_id :id
 		}).then(function(){
 			res.render('admin/category_success',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '分类名称删除成功！',
 				url : '/admin/category',
 				title:'删除'
@@ -282,14 +283,14 @@ router.get('/content',function(req,res){
 		Content.find().sort({nowTime:-1}).limit(limit).skip(skip).populate(['category','user']).then(function( contents ){
 			//console.log(contents); // 返回所有数据的数组集合
 			res.render('admin/content_index',{
-				infoUser :　req.infoUser,
+				infoUser,
 				contents : contents,
 				// 返回分页数据
 				page : page,
 				pages:pages,
 				limit:limit,
 				count:count,
-				url : '/admin/content'
+				url : '/admin/content?'
 			})// 第一个参数：引入的html模板； 第二个参数 用户登录判断的模板用于html中模板判断{%%}
 		})
 	})
@@ -301,12 +302,12 @@ router.get('/content/add',function(req,res){
 	Category.find().sort({_id:-1}).then(function( categories ){
 		if( categories ){
 			res.render('admin/content_add',{
-				infoUser :　req.infoUser,
+				infoUser,
 				categories : categories
 			})
 		}else{
 			res.render('admin/category_err',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '获取分类名称失败！'
 			})
 		}
@@ -321,7 +322,7 @@ router.post('/content/add',function(req,res){
 	var title = req.body.title || '';
 	if ( title=='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '标题不能为空！请返回上一页重新输入！'
 		});
 		return Promise.reject();
@@ -332,10 +333,10 @@ router.post('/content/add',function(req,res){
 			abstract : req.body.abstract,
 			content_md : req.body.content_md,
 			content_html : req.body.content_html,
-			user : req.infoUser._id.toString() // 先保存作者
+			user : req.session._id.toString() // 先保存作者
 		}).save().then(function( newName ){
 			res.render('admin/category_success',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '文章内容添加成功！',
 				url : '/admin/content',
 				title : '添加'
@@ -359,14 +360,14 @@ router.get('/content/eidt',function(req,res){
 	}).then(function( contents ){
 		if( !contents ){
 			res.render('admin/category_err',{
-				infoUser : req.infoUser,
+				infoUser,
 				message : '文章内容不存在，请返回查看！',
 				title : '编辑'
 			})
 			return Promise.reject();
 		}else{
 			res.render('admin/content_eidt',{
-				infoUser : req.infoUser,
+				infoUser,
 				categories:categories,
 				contents : contents
 			})
@@ -381,7 +382,7 @@ router.post('/content/eidt',function(req,res){
 	var id = req.query.id || ''; // 获取path下的id
 	if ( title=='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '标题不能为空！请返回上一页重新输入！'
 		});
 		return Promise.reject();
@@ -396,7 +397,7 @@ router.post('/content/eidt',function(req,res){
 			content_html : req.body.content_html,
 		}).then(function( newName ){
 			res.render('admin/category_success',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '文章内容添加成功！',
 				url : '/admin/content',
 				title : '修改'
@@ -411,7 +412,7 @@ router.get('/content/delete',function(req,res){
 	var id = req.query.id || '';
 	if( id =='' ){
 		res.render('admin/category_err',{
-			infoUser :　req.infoUser,
+			infoUser,
 			message : '删除文章内容失败！',
 			title : '删除'
 		});
@@ -420,7 +421,7 @@ router.get('/content/delete',function(req,res){
 			_id : id
 		}).then(function(){
 			res.render('admin/category_success',{
-				infoUser :　req.infoUser,
+				infoUser,
 				message : '文章内容删除成功！',
 				url : '/admin/content',
 				title : '删除'
@@ -435,14 +436,36 @@ router.get('/content/delete',function(req,res){
  * */
 router.get('/comment',function(req,res){
 	var contentId = req.query.id|| ''; // 获取path下的id
+	var page = Number(req.query.page) || 1;
+	var limit = 5; // 每页显示条数
+	var skip = 0; // 跳过条数
+	var pages = 0;
+	var count = 0;
 	// 查找属于内容 所在的评论
 	Content.findOne({
 		_id : contentId
 	}).populate(['category','user']).then(function(content){
 		content.comments = content.comments.reverse();
+		count = content.comments.length;
+		// 页数超过最大页数限制
+		pages = Math.ceil(count/limit);
+		// page最大值等于pages
+		page = Math.min(page,pages);
+		// page最小值为1
+		page = Math.max(page,1);
+		
+		skip = (page-1)*limit; // 跳过条数
+		console.log(page);
+		content.comments = content.comments.slice(skip,limit*page);
+		console.log(content.comments);
 		res.render('admin/comment',{
-			infoUser :　req.infoUser,
-			contents : content
+			infoUser,
+			pages,
+			page,
+			limit,
+			count,
+			contents: content,
+			url: '/admin/comment?id='+contentId+'&'
 		})
 	})
 })

@@ -1,4 +1,7 @@
 $(function(){
+	$('a').on('mouseover',function(ev){
+		return false;
+	})
 	var $registered = $('.registered');
 	var $login = $('.login');
 	var $info = $('.info');
@@ -46,7 +49,7 @@ $(function(){
 	
 	// 登录按钮
 	$login.find('input[type=button]').click(function(){
-		
+		console.log(1);
 		$.ajax({
 			type:'post',
 			url:'/api/user/login',

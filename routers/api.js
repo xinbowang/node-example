@@ -67,10 +67,12 @@ router.post('/user/register',function(req,res,next){
 		resData.message = '注册成功';
 		// 直接返回cookie信息，前端实现页面刷新直接登录;
 		// 设置cookie,返回一个用户信息字符串
-		req.cookies.set('infoUser',JSON.stringify({ // 将cookie保存成字符串格式
+		/*req.cookies.set('infoUser',JSON.stringify({ // 将cookie保存成字符串格式
 			_id : newInfoUser._id,
 			username : newInfoUser.username
-		}));
+		}));*/
+		req.session.username = newInfoUser.username;
+		req.session._id = newInfoUser._id;
 		res.json(resData);
 	})
 })
@@ -79,9 +81,15 @@ router.post('/user/register',function(req,res,next){
 router.post('/user/login',function( req, res ){
 	var username = req.body.username; // post发送过来的数据
 	var password = req.body.password;
-	if( username == '' || password=='' ){
+	if( username == '' ){
 		resData.code = 1;
-		resData.message = '用户名或密码不能为空！';
+		resData.message = '用户名不能为空！';
+		res.json(resData); // 将数据保存成json格式，返回给前端
+		return;
+	}
+	if( password == '' ){
+		resData.code = 1;
+		resData.message = '密码不能为空！';
 		res.json(resData); // 将数据保存成json格式，返回给前端
 		return;
 	}
@@ -102,10 +110,12 @@ router.post('/user/login',function( req, res ){
 		}
 		resData.message = '登陆成功！';
 		// 设置cookie,返回一个用户信息字符串
-		req.cookies.set('infoUser',JSON.stringify({ // 将cookie保存成字符串格式
+		/*req.cookies.set('infoUser',JSON.stringify({ // 将cookie保存成字符串格式
 			_id : infoUser._id,
 			username : infoUser.username
-		}));
+		}));*/
+		req.session.username = infoUser.username;
+		req.session._id = infoUser._id;
 		res.json(resData); // 将数据保存成json格式，返回给前端
 		return;
 	})
@@ -115,7 +125,7 @@ router.post('/user/login',function( req, res ){
 router.post('/comment/post',function(req,res){
 	var contentId = req.body.contentid;
 	var data = {
-		username : req.infoUser.username, // 登录的话，cookie里保存着用户
+		username : req.session.username, // 登录的话，cookie里保存着用户
 		time : new Date(),
 		content : req.body.content // 解析post数据
 	}
@@ -146,7 +156,8 @@ router.get('/comment',function(req,res){
 
 // 退出登录
 router.get('/user/logout',function(req,res){
-	req.cookies.set('infoUser',null); // cookie返回 空; 清楚cookie
+	//req.cookies.set('infoUser',null); // cookie返回 空; 清楚cookie
+	req.session.destroy(); // 销毁session
 	res.json(resData); // 将数据保存成json格式，返回给前端
 })
 

@@ -5,6 +5,7 @@
 		{% if contents.length %}
 			{% for content in contents %}
 				<div class="content">
+					{{content}}
 					<p>{{content.title}}<span>作者：{{content.user.username}}&nbsp;&nbsp;发布时间：{{content.nowTime|date('Y年m月d日 H:i:s',-8*60) }}&nbsp;&nbsp;阅读量：{{content.views}}&nbsp;&nbsp;评论数：{{content.comments.length}}</span></p>
 					<div class="content-all clearfix">
 						<div>
@@ -14,6 +15,7 @@
 					</div>
 				</div>
 			{% endfor %}
+			{% if page %}
 			<nav aria-label="Page navigation" style="text-align: center;">
 				<ul class="pagination">
 					<li>
@@ -22,15 +24,11 @@
 							<span aria-hidden="true">&laquo; 上一页</span>
 						</a>
 						{% else %}
-						<a href="javascript:;" class="disabled" aria-label="Previous">
 							<span aria-hidden="true">没有上一页了</span>
-						</a>
 						{%endif%}
 					</li>
 					<li>
-						<a>
-							<span aria-hidden="true">{{page}} / {{pages}}</span>
-						</a>
+						<span aria-hidden="true">{{page}} / {{pages}}</span>
 					</li>
 					<li>
 						{% if page<pages %}
@@ -38,13 +36,12 @@
 							<span aria-hidden="true">下一页 &raquo;</span>
 						</a>
 						{% else %}
-						<a href="javascript:;" class="disabled" aria-label="Next">
 							<span aria-hidden="true">没有下一页了</span>
-						</a>
 						{%endif%}
 				    </li>
 				</ul>
 			</nav>
+			{%endif%}
 		{% else %}
 		<div class="panel panel-danger">
 			<div class="panel-heading">

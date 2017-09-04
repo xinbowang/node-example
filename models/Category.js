@@ -4,6 +4,6 @@ var mongoose = require('mongoose');
 var userSch = require('../schemas/category');
 
 // mongoose下的模型类:http://mongoosejs.com/docs/models.html
-var User = mongoose.model('Category', userSch);
+var Category = mongoose.model('Category', userSch);
 
-module.exports = User;
+module.exports = Category;

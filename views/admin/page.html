@@ -1,7 +1,7 @@
 <nav aria-label="Page navigation" style="text-align: center;">
 	<ul class="pagination">
 		<li>
-			<a href="{% if page<=2 %}{{url}}{% else %}{{url}}?page={{page-1}}{%endif%}" aria-label="Previous">
+			<a href="{% if page<=2 %}{{url}}{% else %}{{url}}page={{page-1}}{%endif%}" aria-label="Previous">
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
@@ -11,7 +11,7 @@
 			</a>
 		</li>
 		<li>
-	    	<a href="{% if page>=pages %}{{url}}?page={{pages}}{% else %}{{url}}?page={{page+1}}{%endif%}" aria-label="Next">
+	    	<a href="{% if page>=pages %}{{url}}page={{pages}}{% else %}{{url}}page={{page+1}}{%endif%}" aria-label="Next">
 				<span aria-hidden="true">&raquo;</span>
 	    	</a>
 	    </li>
